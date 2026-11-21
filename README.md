@@ -300,7 +300,7 @@ Los estilos están en `src/main/resources/META-INF/resources/css/pharmanova.css`
 
 ## 16. Equipo y curso
 
-- **Integrantes:** (completar)
-- **Docente:** (completar)
+- **Integrantes:** (Nicoll Alejandra Pérez Palencia - Sergio Andrés Ávila Ávila - Juan Esteban Niño Benitez)
+- **Docente:** (Jhon Alexis Piracoca)
 - **Curso:** Desarrollo Orientado a Servicios 2026-2
 - **Universidad:** Santo Tomás, Seccional Tunja
