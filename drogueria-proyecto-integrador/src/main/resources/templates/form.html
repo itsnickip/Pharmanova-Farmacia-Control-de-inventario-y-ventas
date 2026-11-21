@@ -1,0 +1,62 @@
+{#include base title='Nueva venta' active='sale' success=success error=error}
+    {#content}
+        <div class="page-header mb-4">
+            <h1>Registrar venta</h1>
+            <p>Seleccione el producto y la cantidad. El stock se descuenta automáticamente.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card-pharma">
+                    <div class="card-header-pharma"><i class="bi bi-cart-plus"></i>Datos de la venta</div>
+                    <div class="p-4">
+                        <form method="post" action="/sales">
+                            <div class="mb-3">
+                                <label for="productId" class="form-label">Producto</label>
+                                <select id="productId" name="productId" class="form-select" required>
+                                    <option value="">-- Seleccione un producto --</option>
+                                    {#for p in products}
+                                        <option value="{p.id}" {#if p.id.toString == productId}selected{/if} {#if p.outOfStock}disabled{/if}>
+                                            {p.name} · Stock: {p.stock} · ${p.price}
+                                        </option>
+                                    {/for}
+                                </select>
+                                <div class="form-text">¿El producto no existe? <a href="/products/new">Regístrelo aquí</a>.</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="quantity" class="form-label">Cantidad</label>
+                                    <input type="number" id="quantity" name="quantity" class="form-control"
+                                           min="1" value="{quantity}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="saleDate" class="form-label">Fecha de la venta</label>
+                                    <input type="date" id="saleDate" name="saleDate" class="form-control"
+                                           value="{saleDate}" required>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between pt-2">
+                                <a href="/" class="btn btn-outline-primary">Cancelar</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check2-circle me-1"></i>Registrar venta
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="panel-beige">
+                    <h2 class="h6 mb-3"><i class="bi bi-info-circle me-2"></i>¿Cómo funciona?</h2>
+                    <ul>
+                        <li><i class="bi bi-check2-circle"></i><span>El precio se toma del producto: no hay que digitarlo.</span></li>
+                        <li><i class="bi bi-check2-circle"></i><span>No se puede vender más unidades de las que hay en stock.</span></li>
+                        <li><i class="bi bi-check2-circle"></i><span>Los productos agotados aparecen deshabilitados en la lista.</span></li>
+                        <li><i class="bi bi-check2-circle"></i><span>La fecha de la venta no puede ser futura.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {/content}
+{/include}

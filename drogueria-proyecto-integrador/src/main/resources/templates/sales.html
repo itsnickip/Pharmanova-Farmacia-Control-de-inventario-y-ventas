@@ -1,0 +1,115 @@
+{#include base title='Ventas del mes' active='sales' success=success error=error}
+    {#content}
+        <div class="page-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <div>
+                <h1>Ventas de {monthLabel}</h1>
+                <p>Resumen del mes y detalle de cada venta registrada.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="/sales/report/pdf?month={month}" class="btn btn-outline-primary">
+                    <i class="bi bi-file-earmark-pdf me-1"></i>Descargar PDF
+                </a>
+                <a href="/sales/new" class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i>Nueva venta</a>
+            </div>
+        </div>
+
+        <form method="get" action="/sales" class="d-flex flex-wrap align-items-end gap-2 mb-4">
+            <div>
+                <label for="month" class="form-label mb-1">Mes</label>
+                <input type="month" id="month" name="month" class="form-control" value="{month}" required>
+            </div>
+            <button type="submit" class="btn btn-accent"><i class="bi bi-search me-1"></i>Consultar</button>
+        </form>
+
+        <div class="row g-3 mb-4">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card-pharma kpi kpi-dark">
+                    <div class="kpi-icon"><i class="bi bi-currency-dollar"></i></div>
+                    <div>
+                        <div class="kpi-label">Total vendido</div>
+                        <div class="kpi-value">${summary.totalAmount}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card-pharma kpi">
+                    <div class="kpi-icon"><i class="bi bi-box-seam"></i></div>
+                    <div>
+                        <div class="kpi-label">Unidades vendidas</div>
+                        <div class="kpi-value">{summary.unitsSold}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card-pharma kpi">
+                    <div class="kpi-icon"><i class="bi bi-receipt"></i></div>
+                    <div>
+                        <div class="kpi-label">Número de ventas</div>
+                        <div class="kpi-value">{summary.salesCount}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card-pharma kpi">
+                    <div class="kpi-icon"><i class="bi bi-trophy"></i></div>
+                    <div>
+                        <div class="kpi-label">Más vendido</div>
+                        <div class="fs-6 fw-bold">{summary.topProduct}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-pharma">
+            <div class="table-responsive">
+                <table class="table table-pharma align-middle">
+                    <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {#for s in sales}
+                        <tr>
+                            <td class="text-nowrap"><i class="bi bi-calendar3 me-2 text-muted"></i>{s.saleDate}</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="thumb"><i class="bi bi-capsule"></i></div>
+                                    <div>
+                                        <div class="fw-semibold">{s.product.name}</div>
+                                        <div class="small text-muted">{s.product.category}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{s.quantity}</td>
+                            <td>${s.unitPrice}</td>
+                            <td class="fw-bold">${s.total}</td>
+                        </tr>
+                    {#else}
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <i class="bi bi-receipt"></i>
+                                    No hubo ventas en este mes.
+                                </div>
+                            </td>
+                        </tr>
+                    {/for}
+                    </tbody>
+                    {#if summary.salesCount > 0}
+                        <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-end fw-semibold">Total del mes</td>
+                            <td class="fw-bold">${summary.totalAmount}</td>
+                        </tr>
+                        </tfoot>
+                    {/if}
+                </table>
+            </div>
+        </div>
+    {/content}
+{/include}

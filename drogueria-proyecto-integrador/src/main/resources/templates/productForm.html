@@ -1,0 +1,67 @@
+{#include base title='Registrar producto' active='product' success=success error=error}
+    {#content}
+        <div class="page-header mb-4">
+            <h1>Registrar producto</h1>
+            <p>Agregue un producto al inventario y defina cuándo debe avisarle que se está acabando.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card-pharma">
+                    <div class="card-header-pharma"><i class="bi bi-capsule"></i>Datos del producto</div>
+                    <div class="p-4">
+                        <form method="post" action="/products">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nombre del producto</label>
+                                <input type="text" id="name" name="name" class="form-control"
+                                       maxlength="120" value="{name}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Categoría</label>
+                                <input type="text" id="category" name="category" class="form-control"
+                                       maxlength="60" placeholder="Analgésicos, Vitaminas, Higiene..." value="{category}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Precio de venta</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" id="price" name="price" class="form-control"
+                                           min="0.01" step="0.01" value="{price}" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="stock" class="form-label">Stock inicial</label>
+                                    <input type="number" id="stock" name="stock" class="form-control"
+                                           min="0" value="{stock}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="minStock" class="form-label">Stock mínimo (alerta)</label>
+                                    <input type="number" id="minStock" name="minStock" class="form-control"
+                                           min="0" value="{minStock}" required>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between pt-2">
+                                <a href="/" class="btn btn-outline-primary">Cancelar</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save me-1"></i>Guardar producto
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="panel-beige">
+                    <h2 class="h6 mb-3"><i class="bi bi-lightbulb me-2"></i>Consejos</h2>
+                    <ul>
+                        <li><i class="bi bi-check2-circle"></i><span>Cada producto tiene su propio stock mínimo: un analgésico de alta rotación puede tener 30 y uno de baja rotación, 5.</span></li>
+                        <li><i class="bi bi-check2-circle"></i><span>Cuando el stock llega al mínimo, el producto aparece como «Por agotarse» en el inventario.</span></li>
+                        <li><i class="bi bi-check2-circle"></i><span>El nombre no puede repetirse, aunque cambien las mayúsculas.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {/content}
+{/include}

@@ -1,0 +1,108 @@
+{#include base title='Inventario' active=filter success=success error=error}
+    {#content}
+        <div class="page-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <div>
+                <h1>Inventario</h1>
+                <p>Controle las existencias y entérese a tiempo de lo que está por agotarse.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="/sales/new" class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i>Nueva venta</a>
+                <a href="/products/new" class="btn btn-accent"><i class="bi bi-plus-circle me-1"></i>Registrar producto</a>
+            </div>
+        </div>
+
+        {#if lowCount > 0}
+            <div class="alert alert-pharma alert-pharma-warning d-flex align-items-center gap-3 mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                <div class="flex-grow-1">
+                    <strong>{lowCount} producto(s) por agotarse o agotados.</strong>
+                    <div class="small">Reponga el inventario antes de que un cliente se quede sin su medicamento.</div>
+                </div>
+                {#if filter != 'low'}
+                    <a href="/?filter=low" class="btn btn-sm btn-outline-primary">Ver cuáles</a>
+                {/if}
+            </div>
+        {/if}
+
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <a href="/" class="chip {#if filter != 'low'}chip-active{/if}">Todos</a>
+            <a href="/?filter=low" class="chip {#if filter == 'low'}chip-active{/if}">Por agotarse</a>
+            <span class="ms-auto text-muted small">Mostrando {products.size} producto(s)</span>
+        </div>
+
+        <div class="card-pharma">
+            <div class="table-responsive">
+                <table class="table table-pharma align-middle">
+                    <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                        <th>Reponer</th>
+                        <th class="text-end">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {#for p in products}
+                        <tr class="{#if p.outOfStock}row-out{#else if p.lowStock}row-low{/if}">
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="thumb {#if p.outOfStock}thumb-out{#else if p.lowStock}thumb-low{/if}">
+                                        <i class="bi bi-capsule"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">{p.name}</div>
+                                        <div class="small text-muted">{p.category}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="fw-semibold">${p.price}</td>
+                            <td>
+                                <span class="fw-bold">{p.stock}</span>
+                                <div class="small text-muted">mín. {p.minStock}</div>
+                            </td>
+                            <td>
+                                {#if p.outOfStock}
+                                    <span class="badge-status badge-out"><i class="bi bi-x-circle"></i>Agotado</span>
+                                {#else if p.lowStock}
+                                    <span class="badge-status badge-low"><i class="bi bi-exclamation-triangle"></i>Por agotarse</span>
+                                {#else}
+                                    <span class="badge-status badge-ok"><i class="bi bi-check-circle"></i>Disponible</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <form method="post" action="/products/{p.id}/restock" class="d-flex gap-1">
+                                    <input type="number" name="quantity" min="1" class="form-control form-control-sm"
+                                           style="width:78px" placeholder="Cant." required>
+                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Reponer stock">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="text-end">
+                                {#if !p.outOfStock}
+                                    <a href="/sales/new?productId={p.id}" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-cart-plus me-1"></i>Vender
+                                    </a>
+                                {#else}
+                                    <span class="text-muted small">Sin stock</span>
+                                {/if}
+                            </td>
+                        </tr>
+                    {#else}
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="bi bi-capsule"></i>
+                                    No hay productos para mostrar.
+                                </div>
+                            </td>
+                        </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {/content}
+{/include}
